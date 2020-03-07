@@ -1,69 +1,91 @@
 import React from 'react'
 import ReactDOM from 'react-dom';
 
-class Resultado extends React.Component {
-    render() {
-        return(
-        <h1> {this.props.resultado} </h1>
+const Contador = () => {
+    const [ valor, setValor ] = React.useState(0);
+    React.useEffect(() => {
+        console.log('use Effect')
+    })
+    return(
+        <div>
+            <h1>{valor}</h1>
+        </div>
+    );
+};
+
+// class Contador extends React.Component {
+//     state = {
+//         valor: 0
+//     }
+//     componentDidMount() {
+//         this.timerID = setInterval(() => {
+//             this.setState(s => ({
+//                 valor: s.valor + 1
+//             }));
+//         }, 1000);
+//     }
+
+//     componentWillUnmount() {
+//         clearInterval(this.timerID);
+//     }
+
+//     componentDidUpdate(prevProps, prevState){
+//         console.log(prevState.valor, this.state.valor);
+//     }
+
+//     render() {
+//         return(
+//             <div>
+//                 <h1> {this.state.valor} </h1>
+//             </div>
+//         )
+//     }
+// }
+
+const App = () => {
+    const [
+        mostrarContador,
+        setMostrarContador
+     ] = React.useState(true);
+     const toggleMostrador = () => {
+        setMostrarContador(ant => !ant);
+     }
+
+     if (!mostrarContador) {
+        return (
+            <div>
+                <input 
+                type="checkbox" 
+                checked={mostrarContador} 
+                onChange={toggleMostrador} />
+            </div>
+        );
+    }else{
+        return (
+            <div>
+                <input 
+                type="checkbox"
+                checked={ mostrarContador}
+                onChange={toggleMostrador} />
+                <Contador />
+            </div>
         );
     }
-}
-class Contador extends React.Component {
-    state = {
-        valor: 0
-    }
-    componentDidMount() {
-        this.timerID = setInterval(() => {
-            this.setState(s => ({
-                valor: s.valor + 1
-            }));
-        }, 1000);
-    }
 
-    componentWillUnmount() {
-        clearInterval(this.timerID);
-    }
+};
 
-    componentDidUpdate(prevProps, prevState){
-        console.log(prevState.valor, this.state.valor);
-    }
+// export default class App extends React.Component {
+//     state = {
+//         mostrarContador: true
+//     };
 
-    render() {
-    return <div><Resultado resultado={ this.state.valor } /></div>;
-    }
-}
+//     toggleMostrador = () => {
+//         this.setState(s => ({
+//             mostrarContador: !s.mostrarContador
+//         }));
+//     };
 
-export default class App extends React.Component {
-    state = {
-        mostrarContador: true
-    };
+//     render() {
 
-    toggleMostrador = () => {
-        this.setState(s => ({
-            mostrarContador: !s.mostrarContador
-        }));
-    };
-
-    render() {
-        if (!this.state.mostrarContador) {
-            return (
-                <div>
-                    <input 
-                    type="checkbox" 
-                    checked={this.state.mostrarContador} 
-                    onChange={this.toggleMostrador} />
-                </div>
-            );
-        }else{
-            return (
-                <div>
-                    <input 
-                    type="checkbox"
-                    checked={ this.state.mostrarContador}
-                    onChange={this.toggleMostrador} />
-                    <Contador />
-                </div>
-            );
-        }
-    }
-}
+//     }
+// }
