@@ -1,12 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-const App = () => {
-    const [
-        searchValue,
-        setSearchValue
-    ] = React.useState('');
-
+const useHackerNewsAPI = () => {
     const [
         query,
         setQuery
@@ -20,13 +15,26 @@ const App = () => {
         }
         const search = async () => {
             const result = await fetch(
-                `https://hn.algolia.com/api/v1/search_by_date?query=${searchValue}`
+                `https://hn.algolia.com/api/v1/search_by_date?query=${query}`
             );
             const data = await result.json();
             setItems(data.hits);
         };
         search();
     }, [query]);
+    return {
+        setQuery,
+        items
+    };
+};
+
+const App = () => {
+    const [
+        searchValue,
+        setSearchValue
+    ] = React.useState('');
+
+    const { setQuery, items } = useHackerNewsAPI();
 
     return (
         <div>
@@ -45,8 +53,8 @@ const App = () => {
             </form>
             <ul>
                 {
-                    items.map( i => (
-                    <li key={ i.objectID }> {i.title} </li>
+                    items.map(i => (
+                        <li key={i.objectID}> {i.title} </li>
                     ))
                 }
             </ul>
