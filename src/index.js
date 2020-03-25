@@ -2,12 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 const useHackerNewsAPI = () => {
-    const [
-        query,
-        setQuery
-    ] = React.useState('');
-
+    const [query, setQuery] = React.useState('');
     const [items, setItems] = React.useState([]);
+    const [loading, setLoading] = React.useState(false);
+
 
     React.useEffect(() => {
         if (!query) {
@@ -19,12 +17,14 @@ const useHackerNewsAPI = () => {
             );
             const data = await result.json();
             setItems(data.hits);
+            setLoading(false);
         };
         search();
     }, [query]);
     return {
         setQuery,
-        items
+        items,
+        loading
     };
 };
 
@@ -34,7 +34,7 @@ const App = () => {
         setSearchValue
     ] = React.useState('');
 
-    const { setQuery, items } = useHackerNewsAPI();
+    const { setQuery, items, loading } = useHackerNewsAPI();
 
     return (
         <div>
@@ -51,13 +51,17 @@ const App = () => {
                 />
                 <button type="submit">Pesquisar</button>
             </form>
-            <ul>
-                {
-                    items.map(i => (
-                        <li key={i.objectID}> {i.title} </li>
-                    ))
-                }
-            </ul>
+            {loading && <h1>Carregando</h1>}
+            {!loading && items.length > 0 && (
+                <ul>
+                    {
+                        items.map(i => (
+                            <li key={i.objectID}> {i.title} </li>
+                        ))
+                    }
+                </ul>
+            )}
+
         </div>
 
     )
